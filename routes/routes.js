@@ -14,9 +14,13 @@ const {blockuser, getBlockUser} = require('../controllers/blockManagement')
 const { addToCart, cartDetails, quantityEdit , productRemove } = require('../controllers/addToCart')
 const userJwtVerify = require('../jwt/userJwtVerify')
 const {checkout} = require('../controllers/checkout')
-const { address, fetchAddresses } = require('../controllers/addressController')
+const { address, fetchAddresses, editAddress, addnewaddress, deleteAddress } = require('../controllers/addressController')
 const { orderConfirm } = require('../controllers/OrderConfirm')
 const { categoryDetails } = require('../controllers/CategoryDetails')
+const { userprofile, editprofile } = require('../controllers/userProfile')
+const { fetchOrders, cancelOrder } = require('../controllers/Orders')
+const { fetchAllOrders, updateOrder } = require('../adminControllers/orderManagement')
+const { passwordChange } = require('../controllers/passwordChange')
 
 const router = express.Router()
 
@@ -38,6 +42,17 @@ router.post('/addaddress', address)
 router.post('/fetchaddresses', fetchAddresses)
 router.post('/orderconfirm', orderConfirm)
 router.get('/category/:categoryname', categoryDetails)
+router.post('/userprofile', userprofile)
+router.post('/editprofile', editprofile)
+router.post('/editaddress', editAddress)
+router.post('/addnewaddress', addnewaddress)
+router.post('/deleteaddress', deleteAddress)
+router.post('/fetchorders', fetchOrders)
+router.post('/cancelorder', cancelOrder)
+router.post('/fetchallorders', fetchAllOrders)
+router.post('/updateorderstatus/:id',updateOrder)
+router.post('/changepassword',passwordChange)
+
 
 
 

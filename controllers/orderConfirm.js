@@ -30,7 +30,7 @@ const orderConfirm = async (req, res) => {
             products: cartItems.map(item => ({
                 productName: item.productId.productName,
                 productId: item.productId._id,
-                quantity: item.productId.quantity,
+                quantity: item.quantity,
                 price: item.productId.price,
                 image : item.productId.imageUrls[0]
             }))
