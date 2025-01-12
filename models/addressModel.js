@@ -32,9 +32,15 @@ const addressSchema = new mongoose.Schema({
         type: String,
         required: true, // ZIP/Postal Code
     },
+
     isDefault: {
         type: Boolean,
         default: false, // Whether this is the default address
+    },
+    disable :
+    {
+        type : Boolean,
+        default : false
     },
     createdAt: {
         type: Date,

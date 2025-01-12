@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+require("dotenv").config();
 
 
 
@@ -19,7 +20,7 @@ const passwordChange = async (req, res) => {
 
     try {
 
-        const decoded = jwt.decode(token , "secretkey")
+        const decoded = jwt.decode(token , process.env.SECRET_KEY)
 
         console.log("decoded", decoded);
 

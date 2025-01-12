@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 const Order = require('../models/OrderModel');
 const Product = require("../models/productModel");
-const Cart = require('../models/CartModal')
+const Cart = require('../models/CartModal');
+
+
 
 
 const orderConfirm = async (req, res) => {
@@ -21,6 +23,10 @@ const orderConfirm = async (req, res) => {
         console.log("AddressId", addressId);
         console.log("paymentMethod", paymentMethod);
 
+
+       
+         
+
          const orderData = await Order.create({
             userId: decoded.id,
             items: cartItems,
@@ -38,7 +44,9 @@ const orderConfirm = async (req, res) => {
 
          })
 
-         console.log("orderData", orderData);
+         
+
+         console.log("orderData::::::::::::::::::::::::::::", orderData);
 
           // Decrease the product quantities
           for (const item of cartItems) {

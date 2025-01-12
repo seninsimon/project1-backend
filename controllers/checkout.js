@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
+require("dotenv").config();
 
 
 
@@ -11,7 +12,7 @@ const checkout = async (req, res) => {
 
     console.log("token", token);
 
-    const decoded = jwt.verify(token, "secretkey");
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
     console.log("decoded", decoded);
     

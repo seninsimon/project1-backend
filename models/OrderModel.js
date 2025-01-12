@@ -11,6 +11,18 @@ const orderSchema = new mongoose.Schema({
         ref: 'Address',
         required: true,
     },
+
+    isReturned : 
+        {
+            type : Boolean,
+            default : false
+        },
+
+    refunded : 
+        {
+           type : Boolean,
+           default : false
+        },
     products: [{
 
         productName: {
@@ -22,6 +34,8 @@ const orderSchema = new mongoose.Schema({
             ref: 'Product',
             required: true,
         },
+        
+        
         quantity: {
             type: Number,
             required: true,
@@ -41,7 +55,7 @@ const orderSchema = new mongoose.Schema({
     },
     paymentMethod: {
          type: String,
-          enum: ['cash_on_delivery'], 
+          enum: ['cash_on_delivery' , 'online_payment'], 
           required: true },
     status: { 
         type: String,
@@ -49,7 +63,7 @@ const orderSchema = new mongoose.Schema({
          default: 'Pending' },
     orderDate: { 
         type: Date, 
-        Fdefault: Date.now },
+        default: Date.now },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

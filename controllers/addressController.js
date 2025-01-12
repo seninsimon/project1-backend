@@ -1,5 +1,6 @@
 const Address = require('../models/addressModel')
 const jwt = require('jsonwebtoken')
+require("dotenv").config();
 
 
 
@@ -14,10 +15,10 @@ const fetchAddresses = async (req, res) => {
     console.log("token", token);
     try {
 
-        const decoded = jwt.verify(token, "secretkey");
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
         console.log("decoded", decoded.id);
 
-        const addresses = await Address.find({ userId: decoded.id })
+        const addresses = await Address.find({ userId: decoded.id , disable : false})
 
         console.log("addresses", addresses);
 
@@ -42,17 +43,20 @@ const address = async (req, res) => {
     console.log("newAddress", newAddress);
     try {
 
-        const decoded = jwt.verify(token, "secretkey");
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
         console.log("decoded", decoded.id);
 
         const userAddress = await Address.find({ userId: decoded.id })
 
-        if(userAddress.length > 2)
-        {
-           return res.status(400).json({
-                success: false, message: "You can add only 3 addresses"})
+        const addressCount = await Address.countDocuments({ userId: decoded.id, disable: false });
 
-            }
+        console.log("address count : ",addressCount);
+        
+
+        if (addressCount >= 3) {
+            return res.status(400).json({ success: false, message: 'Cannot add more than 3 addresses.' });
+        }
+
 
         console.log("userAddress  :::::", userAddress);
         
@@ -69,7 +73,7 @@ const address = async (req, res) => {
     } catch (error) {
 
         console.log("Error in address", error);
-        res.status(500).json({ success: false, message: "Internal server error" })
+        res.status(500).json({ success: "invalid", message: "Internal server error  rrr" })
     }
 }
 
@@ -86,7 +90,7 @@ const editAddress = async (req, res) => {
 
         console.log('dataass :::',userId , fullName , phoneNumber , address , city , state , pincode)
 
-        const decoded = jwt.verify(token, "secretkey");
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
         console.log("decoded", decoded);
 
@@ -96,7 +100,8 @@ const editAddress = async (req, res) => {
             address : address,  
             city : city,    
             state : state,  
-            pincode : pincode   
+            pincode : pincode,
+            disable : false
 
         })
 
@@ -126,7 +131,7 @@ const addnewaddress = async(req,res)=>
 
         console.log('dataass :::', fullName , phoneNumber , address , city , state , pincode)
 
-        const decoded = jwt.verify(token, "secretkey");
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
         console.log("decoded", decoded);
 
@@ -135,10 +140,13 @@ const addnewaddress = async(req,res)=>
         console.log("userAddress  ::: ",userAddress);
         
 
-        if(userAddress.length > 2)
-        {
-              return res.status(400).json({
-                 success: false, message: "You can add only 3 addresses"})
+        const addressCount = await Address.countDocuments({ userId: decoded.id, disable: false });
+
+        console.log("address count : ",addressCount);
+        
+
+        if (addressCount >= 3) {
+            return res.status(400).json({ success: false, message: 'Cannot add more than 3 addresses.' });
         }
 
         const addresss = await Address.create({
@@ -160,7 +168,7 @@ const addnewaddress = async(req,res)=>
     } catch (error) {
 
         console.log("Error in addnewaddress", error);
-        res.status(500).json({ success: false, message: "Internal server error" })
+        res.status(500).json({ success: "invalid", message: "Internal server error  rrr" })
         
     }
 }
@@ -174,7 +182,7 @@ const deleteAddress = async(req,res)=>{
 
     try {
 
-        const deleteaddress = await Address.findByIdAndDelete(addressId)
+        const deleteaddress = await Address.findByIdAndUpdate({_id : addressId },{disable : true})
 
         console.log("deleteaddress",deleteaddress);
         

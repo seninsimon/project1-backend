@@ -1,3 +1,4 @@
+
 const Category = require("../models/categoryModel")
 const Product = require("../models/productModel")
 
@@ -71,9 +72,9 @@ const softDeleteCategory = async (req, res) => {
                 isDeleted: !cate.isDeleted,
                 isActive: !cate.isActive
             })
-        
 
-        
+
+
         console.log("category that is diabled : ", disableCateogry);
 
         res.status(200).json({ success: true, message: "category disabled" })
@@ -118,4 +119,138 @@ const categoryEdit = async (req, res) => {
 
 
 
-module.exports = { addCategory, fetchCategory, softDeleteCategory, categoryEdit }
+const categoryOffer = async (req, res) => {
+    const { id, offerType, offerValue, expiryDate } = req.body; // Extract fields from request body
+
+    try {
+        // Find the category by ID
+        const category = await Category.findById(id);
+
+        if (!category) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+
+        // Update the discount field
+        category.discount = {
+            type: offerType,
+            value: offerValue,
+            expiryDate,
+        };
+
+        // Save the updated category
+        await category.save();
+
+        res.status(200).json({
+            message: "Offer added successfully",
+            category,
+        });
+    } catch (error) {
+        console.error("Error updating category offer:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+const fetchCategoryOffer = async (req, res) => {
+
+
+    const { id } = req.params
+    console.log("id product :::::::::::::::::::::::::::::::::::::::::::::::::", id);
+
+    try {
+
+        const product = await Product.findById(id).populate(
+            {
+                path: "categoryId",
+                select: "discount"
+            }
+        )
+
+        console.log("categoryDetails :", product.categoryId.discount);
+
+
+        res.status(200).json({
+            message: "discount cat fetched successfully", categoryDiscount: product.categoryId.discount
+        })
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+
+    }
+}
+
+
+
+const cateName = async (req, res) => {
+
+    console.log(req.body);
+
+    const { id } = req.body
+
+    try {
+
+
+        const categoryname = await Category.findById(id)
+
+        console.log("category name :", categoryname);
+
+
+        res.status(200).json({ message: "cate name fetched", categoryDetails: categoryname })
+
+    } catch (error) {
+        res.status(500).json({ message: "internal server error" })
+    }
+}
+
+
+//category offer details
+
+
+const categoryofferDetails = async (req, res) => {
+    try {
+
+
+        const offerDetails = await Category.find()
+
+        res.status(200).json({ message: "the offer fetched", offerDetails: offerDetails })
+
+    } catch (error) {
+        res.status(500).json({ message: "internal server error" })
+
+    }
+}
+
+//to delete offer 
+
+const categoryofferDelete = async (req, res) => {
+
+    const { id } = req.params
+    console.log("delete id", id);
+
+
+    try {
+
+
+        const offerDetails = await Category.findByIdAndUpdate(id, { "discount.value": 0 })
+
+        res.status(200).json({ message: "the offer fetched", offerDetails: offerDetails })
+
+    } catch (error) {
+        res.status(500).json({ message: "internal server error" })
+
+    }
+}
+
+
+
+
+
+
+
+
+module.exports = {
+    addCategory, fetchCategory, softDeleteCategory,
+    categoryEdit, categoryOffer, fetchCategoryOffer, cateName,
+    categoryofferDetails, categoryofferDelete, 
+
+}

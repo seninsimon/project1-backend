@@ -18,9 +18,7 @@ const categoryDetails = async (req,res)=> {
 
         const productDetails = await Product.find({ categoryId : categoryDetails._id , isDeleted : false }).populate("categoryId")
 
-        console.log("categoryDetails : ", categoryDetails);
-
-        console.log("productDetails : ", productDetails);
+        
 
         res.status(200).json({ success: true, message: "Category details fetched successfully" , 
             productDetails :  productDetails

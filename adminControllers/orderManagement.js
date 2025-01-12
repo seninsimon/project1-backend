@@ -10,7 +10,8 @@ const fetchAllOrders = async (req , res)=>
         const allOrders = await orders.find()
         .populate("userId")
         .populate("products.productId")
-         
+        .populate("address")
+        .sort({ createdAt: -1 });
         console.log("allOrders  ::: ",allOrders);
 
 

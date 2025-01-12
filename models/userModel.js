@@ -24,7 +24,11 @@ const userSchema = new mongoose.Schema({
     isBlocked : {
         type : Boolean , 
         default : false
-    }
+    },
+    usedCoupons: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Coupon',
+      }],
 })
 
 

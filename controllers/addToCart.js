@@ -2,6 +2,7 @@ const Cart = require('../models/CartModal')
 const Product = require('../models/productModel')
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
+require("dotenv").config();
 
 
 
@@ -10,7 +11,7 @@ const addToCart = async (req, res) => {
 
     try {
         // Decode the JWT token to verify the user's identity
-        const decoded = jwt.verify(token, "secretkey");
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
         console.log("Decoded token:", decoded);
 
         // Find the user by the decoded ID
@@ -84,7 +85,14 @@ const cartDetails = async (req, res) => {
 
         const cartData = await Cart.find({ userId: decode.id })
             .populate("userId")
-            .populate({ path: "items.productId" })
+            .populate({
+                path: "items.productId",
+                populate: {
+                    path: "categoryId"  // Specify the path to populate the categoryId
+                }
+            });
+
+
         console.log("cart data", cartData);
 
 
@@ -112,7 +120,7 @@ const quantityEdit = async (req, res) => {
         if (quantity < 1) {
             quantity = 1;
         }
-        const decode = jwt.decode(token, "secretkey");
+        const decode = jwt.decode(token, process.env.SECRET_KEY);
         console.log("decoded id", decode);
 
         const cart = await Cart.findOne({ userId: decode.id });
@@ -146,22 +154,22 @@ const productRemove = async (req, res) => {
     const { id, token } = req.body;
     console.log(id, token);
     try {
-        const decode = jwt.decode(token, "secretkey");
+        const decode = jwt.decode(token, process.env.SECRET_KEY);
         console.log("decoded id", decode);
-         
+
         const cart = await Cart.findOne({ userId: decode.id });
         console.log("cart", cart);
 
         const itemIndex = cart.items.findIndex(item => item.productId.toString() === id);
         console.log("item index", itemIndex);
 
-        const updatedCart = await Cart.findOneAndUpdate({ userId: decode.id } , 
+        const updatedCart = await Cart.findOneAndUpdate({ userId: decode.id },
             { $pull: { items: { productId: id } } },
             { new: true }
         );
 
         res.status(200).json({ message: "Product removed successfully", cart: updatedCart });
-        
+
 
     } catch (error) {
 
@@ -174,4 +182,4 @@ const productRemove = async (req, res) => {
 
 
 
-module.exports = { addToCart, cartDetails, quantityEdit , productRemove}
+module.exports = { addToCart, cartDetails, quantityEdit, productRemove }

@@ -5,7 +5,10 @@ const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 
 
-const client = new OAuth2Client("599558492449-gb9c52k4vegip4ieaqsgsvh8bqao63ne.apps.googleusercontent.com")
+require('dotenv').config(); 
+
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 
 const googleAuth = async (req, res) => {

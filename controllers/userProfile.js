@@ -1,5 +1,7 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
+require("dotenv").config();
+
 
 
 
@@ -11,7 +13,7 @@ const userprofile = async (req,res)=>{
     
     try {
 
-        const decoded = jwt.decode(token,"secretkey")
+        const decoded = jwt.decode(token,process.env.SECRET_KEY)
 
         console.log("decoded",decoded);
 
@@ -40,7 +42,7 @@ const editprofile = async (req,res)=>
     
     try {
 
-        const user = jwt.decode(token,"secretkey")
+        const user = jwt.decode(token,process.env.SECRET_KEY)
         console.log("user",user);
 
         

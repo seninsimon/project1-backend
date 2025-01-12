@@ -10,7 +10,7 @@ const productDetails = async (req,res)=>
     try {
 
         const productDetails = await Product.findById(id)
-        console.log("productDetails : ", productDetails);
+        
 
         const categoryName = await Category.findById(productDetails.categoryId)
 
