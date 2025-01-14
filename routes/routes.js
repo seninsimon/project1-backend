@@ -18,7 +18,7 @@ const { address, fetchAddresses, editAddress, addnewaddress, deleteAddress } = r
 const { orderConfirm } = require('../controllers/OrderConfirm')
 const { categoryDetails } = require('../controllers/CategoryDetails')
 const { userprofile, editprofile } = require('../controllers/userProfile')
-const { fetchOrders, cancelOrder, returnProduct } = require('../controllers/Orders')
+const { fetchOrders, cancelOrder , returnProductId } = require('../controllers/Orders')
 const { fetchAllOrders, updateOrder } = require('../adminControllers/orderManagement')
 const { passwordChange } = require('../controllers/passwordChange')
 const { createRazorpayOrder, confirmRazorpayPayment } = require('../controllers/razorPayController');
@@ -26,6 +26,8 @@ const { wishlistProducts, fetchWishlist, deletewishlist } = require('../controll
 const { fetchReturns, refundTransaction } = require('../adminControllers/returnOrders')
 const { fetchWallet, fetchTransaction } = require('../controllers/walletController')
 const { createCoupon, applyCoupon, coupondetails, deleteCoupons } = require('../adminControllers/couponManagement')
+const { salesReport, overalldetail, totalSales, totalDiscounts, orderAmount } = require('../adminControllers/salesReport')
+const { CouponFetch } = require('../controllers/couponController')
 
 
 const router = express.Router()
@@ -61,10 +63,17 @@ router.post('/changepassword', passwordChange)
 router.post('/wishlist', wishlistProducts)
 router.post('/productwishlist', fetchWishlist)
 router.post('/productwishlist/:id', deletewishlist)
-router.post('/productreturn', returnProduct)
 router.post('/walletfetch', fetchWallet)
 router.post('/transactionhistory', fetchTransaction)
 router.post('/offerforcategory/:id', fetchCategoryOffer)
+router.post('/returnproductid', returnProductId)
+router.get('/fetchcoupons', CouponFetch)
+
+
+
+
+
+
 router.post('/create-razorpay-order', createRazorpayOrder);
 router.post('/confirm-razorpay-payment', orderConfirm);
 
@@ -97,6 +106,14 @@ router.post('/createcoupon', adminJwtVerify, createCoupon)
 router.post('/couponapply', adminJwtVerify,  applyCoupon)
 router.get('/coupondetails', adminJwtVerify,  coupondetails)
 router.delete('/deletecoupon/:id', adminJwtVerify,  deleteCoupons)
+router.get('/totalsales', totalSales);
+router.get('/totaldiscounts', totalDiscounts);
+router.get('/orderamount', orderAmount);
+
+// POST route (for custom date ranges)
+router.post('/totalsales', totalSales); // For custom date range
+router.post('/totaldiscounts', totalDiscounts); // For custom date range
+router.post('/orderamount', orderAmount); // For custom date range  
 
 
 module.exports = router

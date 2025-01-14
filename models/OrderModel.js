@@ -12,17 +12,13 @@ const orderSchema = new mongoose.Schema({
         required: true,
     },
 
-    isReturned : 
-        {
-            type : Boolean,
-            default : false
-        },
+    isReturned:
+    {
+        type: Boolean,
+        default: false
+    },
 
-    refunded : 
-        {
-           type : Boolean,
-           default : false
-        },
+
     products: [{
 
         productName: {
@@ -34,8 +30,19 @@ const orderSchema = new mongoose.Schema({
             ref: 'Product',
             required: true,
         },
-        
-        
+        isProductReturned: {
+
+            type: Boolean,
+            default: false
+
+        },
+        refunded:
+        {
+            type: Boolean,
+            default: false
+        },
+
+
         quantity: {
             type: Number,
             required: true,
@@ -44,7 +51,7 @@ const orderSchema = new mongoose.Schema({
             type: Number,
             required: true,
         },
-        image:{
+        image: {
             type: String,
             required: true,
         }
@@ -54,17 +61,19 @@ const orderSchema = new mongoose.Schema({
         required: true,
     },
     paymentMethod: {
-         type: String,
-          enum: ['cash_on_delivery' , 'online_payment'], 
-          required: true },
-    status: { 
         type: String,
-         enum: ['Pending', 'Confirmed', 'Dispatched', 'Delivered', 'Cancelled'], 
-         default: 'Pending' },
-    orderDate: { 
-        type: Date, 
-        default: Date.now },
+        enum: ['cash_on_delivery', 'online_payment'],
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ['Pending', 'Confirmed', 'Dispatched', 'Delivered', 'Cancelled'],
+        default: 'Pending'
+    },
+    orderDate: {
+        type: Date,
+        default: Date.now
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);
-    

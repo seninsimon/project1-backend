@@ -35,7 +35,6 @@ const applyCoupon = async (req, res) => {
 
     const token = req.headers?.authorization.split(" ")[1];
 
-
     const decoded = jwt.decode(token, "secretkey");
 
     try {
@@ -61,8 +60,13 @@ const applyCoupon = async (req, res) => {
             return res.status(400).json({ success: false, message: 'You have already used this coupon.' });
         }
 
-        // Calculate discount
-        const discountAmount = (totalPrice * coupon.discount) / 100;
+        // Apply flat discount
+        const discountAmount = coupon.discount; // Flat discount, no percentage calculation
+
+        if (totalPrice < discountAmount) {
+            // Ensure the discount doesn't exceed the total price
+            discountAmount = totalPrice;
+        }
 
         const discountedPrice = totalPrice - discountAmount;
 
@@ -84,6 +88,7 @@ const applyCoupon = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Server error.' });
     }
 };
+
 
 
 const coupondetails = async (req, res) => {
@@ -120,6 +125,9 @@ const deleteCoupons = async (req,res)=>
         return res.status(500).json({ success: false, message: 'Server error.' });
     }
 }
+
+
+
 
 
 
