@@ -114,7 +114,7 @@ const cartDetails = async (req, res) => {
 
 const quantityEdit = async (req, res) => {
     const { id, quantity, token } = req.body;
-    console.log(id, quantity, token);
+    
     try {
 
         if (quantity < 1) {

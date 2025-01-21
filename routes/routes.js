@@ -15,7 +15,7 @@ const { addToCart, cartDetails, quantityEdit, productRemove } = require('../cont
 const userJwtVerify = require('../jwt/userJwtVerify')
 const { checkout } = require('../controllers/checkout')
 const { address, fetchAddresses, editAddress, addnewaddress, deleteAddress } = require('../controllers/addressController')
-const { orderConfirm } = require('../controllers/OrderConfirm')
+const { orderConfirm, retryOrderConfirm } = require('../controllers/OrderConfirm')
 const { categoryDetails } = require('../controllers/CategoryDetails')
 const { userprofile, editprofile } = require('../controllers/userProfile')
 const { fetchOrders, cancelOrder , returnProductId } = require('../controllers/Orders')
@@ -28,6 +28,9 @@ const { fetchWallet, fetchTransaction } = require('../controllers/walletControll
 const { createCoupon, applyCoupon, coupondetails, deleteCoupons } = require('../adminControllers/couponManagement')
 const { salesReport, overalldetail, totalSales, totalDiscounts, orderAmount } = require('../adminControllers/salesReport')
 const { CouponFetch } = require('../controllers/couponController')
+const { productOffer, fetchProductOffer, fetchProductOfferDetails, deleteProductOffer } = require('../adminControllers/productOffer')
+const { topProducts, topCategories, topBrands } = require('../adminControllers/topanalyticspage')
+
 
 
 const router = express.Router()
@@ -74,8 +77,11 @@ router.get('/fetchcoupons', CouponFetch)
 
 
 
+
 router.post('/create-razorpay-order', createRazorpayOrder);
 router.post('/confirm-razorpay-payment', orderConfirm);
+router.post('/confirm-razorpay-payment-update', retryOrderConfirm);
+
 
 
 
@@ -114,6 +120,15 @@ router.get('/orderamount', orderAmount);
 router.post('/totalsales', totalSales); // For custom date range
 router.post('/totaldiscounts', totalDiscounts); // For custom date range
 router.post('/orderamount', orderAmount); // For custom date range  
+
+router.post('/productoffer/:id', productOffer); 
+router.get('/productoffer/:id', fetchProductOffer ); 
+router.get('/fetchproductofferdetails', fetchProductOfferDetails ); 
+router.delete('/deleteproductoffer/:id', deleteProductOffer ); 
+router.get('/top10products', topProducts ); 
+router.get('/top10categories', topCategories ); 
+router.get('/top10brands', topBrands ); 
+
 
 
 module.exports = router

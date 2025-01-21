@@ -2,41 +2,6 @@ const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
 
 
-
-
-// const homePage = async (req , res)=>
-// {
-    
-//     try {
-
-        
-
-
-//         const products = await Product.find({isDeleted : false  }).populate({
-//             path:'categoryId',
-//             match : {isDeleted : false},
-//             select : "categoryName  isDeleted categoryId"
-//         })
-
-//         const filteredProducts = products.filter((product) => product.categoryId !== null);
-        
-
-        
-
-       
-
-//         res.status(200).json({success : true , message : "products fetched succussfully " , allProducts : filteredProducts})
-        
-   
-//     } catch (error) {
-
-//         res.status(500).json({message : "internal server error in fetching products"})
-        
-//     }
-// }
-
-
-// module.exports = {homePage}
 const homePage = async (req, res) => {
     const { page = 1, limit = 10 } = req.query; // Default to page 1 and 10 items per page
 

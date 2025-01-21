@@ -10,10 +10,10 @@ const Transaction = require("../models/transactionSchema")
 
 
 const fetchOrders = async (req, res) => {
-    console.log(req.body);
+    
 
     const { token } = req.body;
-    console.log("token", token);
+   
     try {
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -30,7 +30,7 @@ const fetchOrders = async (req, res) => {
         )
             .sort({ createdAt: -1 });
 
-        console.log("orders with populated products", orders);
+       
 
         res.status(200).json({
             success: true,
@@ -44,53 +44,12 @@ const fetchOrders = async (req, res) => {
 };
 
 
-// const cancelOrder = async (req, res) => {
-//     const { orderId, quantity ,totalprice } = req.body;
-
-//     console.log("totalprice", totalprice);
-
-
-
-//     try {
-
-
-
-
-
-//         const order = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' }, { new: true });
-
-
-
-//         for (const item of order.products) {
-//             await Product.findByIdAndUpdate(
-//                 item.productId, // Match the product by its ID
-//                 { $inc: { quantity: + quantity } }, // Decrement quantity
-//                 { new: true } // Return the updated document
-//             );
-
-
-
-//         }
-
-
-
-//         res.status(200).json({
-//             success: true,
-//             message: "Order cancelled successfully",
-//             order: order,
-//         });
-//     } catch (error) {
-//         console.log("Error in cancelOrder", error);
-//         res.status(500).json({ success: false, message: "Internal server error" });
-//     }
-// }
 
 
 const cancelOrder = async (req, res) => {
     const { orderId, quantity, totalprice, paymentmethod } = req.body;
 
-    console.log("Payment method:", paymentmethod);
-    console.log("Total price to refund:", totalprice);
+    
 
     const token = req.headers?.authorization.split(" ")[1];
 

@@ -11,10 +11,7 @@ const walletSchema = new mongoose.Schema({
     default: 0,
     min: 0,
   },
-  // refunded : {
-  //   type : Boolean,
-  //   default : false
-  // }
+
 });
 
 const Wallet = mongoose.model('Wallet', walletSchema);

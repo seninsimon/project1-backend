@@ -12,7 +12,7 @@ const fetchAllOrders = async (req , res)=>
         .populate("products.productId")
         .populate("address")
         .sort({ createdAt: -1 });
-        console.log("allOrders  ::: ",allOrders);
+        
 
 
         res.status(200).json({message : "all orders fetched",orders : allOrders})
@@ -32,8 +32,7 @@ const updateOrder = async (req, res)=>
 
     const {orderId, newStatus} = req.body
 
-    console.log("orderId :::",orderId);
-    console.log("status :::",newStatus);
+    
 
 
     try {

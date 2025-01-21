@@ -14,10 +14,7 @@ const checkout = async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
-    console.log("decoded", decoded);
-    
-
-    console.log("checkoutData", checkoutData);
+   
 
 
 

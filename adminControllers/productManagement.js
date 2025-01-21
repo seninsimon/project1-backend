@@ -10,7 +10,7 @@ const fetchProduct = async (req, res) => {
     try {
 
         const Products = await Product.find().populate('categoryId', 'categoryName isDeleted' )
-        console.log(Products);
+        
         res.status(201).json({ success: true, message: "products fetched", ProductDetails: Products })
 
     } catch (error) {
@@ -34,13 +34,13 @@ const addProduct = async (req, res) => {
 
         const categoryid = await Category.findOne({ categoryName: categoryName })
 
-        console.log(categoryid);
+       
 
 
 
         const newProduct = await Product.create({ ...req.body, categoryId: categoryid._id })
 
-        console.log(newProduct)
+        
 
         res.status(200).json({ success: true, message: "new product added", newProduct: newProduct })
 
@@ -60,7 +60,7 @@ const addProduct = async (req, res) => {
 const fetchEditProduct = async (req, res) => {
 
     const { id } = req.params
-    console.log(id);
+ 
 
 
     try {
@@ -71,7 +71,7 @@ const fetchEditProduct = async (req, res) => {
                 
             }
         )
-        console.log("edit  productsssssss"  ,product);
+        
         res.status(200).json({ success: true, message: "fetched edit products ", editProducts: product })
 
 
@@ -89,9 +89,7 @@ const fetchEditProduct = async (req, res) => {
 const editProduct = async (req, res) => {
     const { fetchedData, id, uploadedImageUrls } = req.body
 
-    console.log(fetchedData, id, uploadedImageUrls );
-
-    console.log(fetchedData.categoryName);
+    
     
     
 
@@ -99,9 +97,7 @@ const editProduct = async (req, res) => {
 
         const categoryProduct = await Category.find({categoryName : fetchedData.categoryName})
 
-        console.log("  edited .........  category product : ",categoryProduct);
-
-        console.log("edited .........id :",categoryProduct._id);
+       
         
         
 
@@ -133,11 +129,11 @@ const disableProduct = async (req , res)=>
 
         const product = await Product.findById(id)
 
-        console.log(product);
+        
 
         const disbledProduct = await Product.findByIdAndUpdate(id , {isDeleted : !product.isDeleted})
 
-        console.log("disabled product : ", disbledProduct);
+        
         
         
 

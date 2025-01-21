@@ -11,9 +11,9 @@ const blockuser = async (req,res)=>
     try {
         
         const tokenKey = Object.keys(token)[0];
-        console.log("token :",tokenKey);
+       
          const data   = jwt.decode(tokenKey , process.env.SECRET_KEY)
-         console.log(data);
+       
          
         res.status(200).json({token : tokenKey , idData : data})
         

@@ -16,7 +16,7 @@ const CouponFetch = async (req, res) => {
             usedBy: { $ne: userId },
         });
 
-        console.log("Filtered coupons:", coupons);
+       
 
         res.status(200).json({ message: "Coupons fetched successfully", coupons });
     } catch (error) {

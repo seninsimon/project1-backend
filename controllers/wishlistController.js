@@ -67,7 +67,7 @@ const fetchWishlist = async (req, res) => {
 
         const user = jwt.decode(token, "secretkey");
 
-        console.log(user);
+        
 
 
 
@@ -91,8 +91,7 @@ const deletewishlist = async (req, res)=>
     const id = req.params.id
     
     const {token} = req.body
-    console.log(token)
-    console.log("id",id);
+   
     
     try {
 
