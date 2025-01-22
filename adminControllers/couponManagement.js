@@ -116,7 +116,7 @@ const deleteCoupons = async (req,res)=>
 
         const deletecoupon = await Coupon.findByIdAndDelete(id)
 
-        console.log(deletecoupon);
+        
 
         res.status(200).json({message : " coupon deleted successfully"})
         

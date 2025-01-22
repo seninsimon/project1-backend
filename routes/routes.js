@@ -109,25 +109,25 @@ router.post('/categoryname', adminJwtVerify, cateName)
 router.get('/categoryofferdetails', adminJwtVerify, categoryofferDetails)
 router.delete('/categoryoffer/:id', adminJwtVerify, categoryofferDelete)
 router.post('/createcoupon', adminJwtVerify, createCoupon)
-router.post('/couponapply', adminJwtVerify,  applyCoupon)
+router.post('/couponapply',   applyCoupon)
 router.get('/coupondetails', adminJwtVerify,  coupondetails)
 router.delete('/deletecoupon/:id', adminJwtVerify,  deleteCoupons)
-router.get('/totalsales', totalSales);
-router.get('/totaldiscounts', totalDiscounts);
-router.get('/orderamount', orderAmount);
+router.get('/totalsales',adminJwtVerify, totalSales);
+router.get('/totaldiscounts',adminJwtVerify, totalDiscounts);
+router.get('/orderamount',adminJwtVerify, orderAmount);
 
 // POST route (for custom date ranges)
-router.post('/totalsales', totalSales); // For custom date range
-router.post('/totaldiscounts', totalDiscounts); // For custom date range
-router.post('/orderamount', orderAmount); // For custom date range  
+router.post('/totalsales',adminJwtVerify, totalSales); // For custom date range
+router.post('/totaldiscounts',adminJwtVerify, totalDiscounts); // For custom date range
+router.post('/orderamount',adminJwtVerify, orderAmount); // For custom date range  
 
-router.post('/productoffer/:id', productOffer); 
-router.get('/productoffer/:id', fetchProductOffer ); 
-router.get('/fetchproductofferdetails', fetchProductOfferDetails ); 
-router.delete('/deleteproductoffer/:id', deleteProductOffer ); 
-router.get('/top10products', topProducts ); 
-router.get('/top10categories', topCategories ); 
-router.get('/top10brands', topBrands ); 
+router.post('/productoffer/:id',adminJwtVerify, productOffer); 
+router.get('/productoffer/:id',adminJwtVerify, fetchProductOffer ); 
+router.get('/fetchproductofferdetails',adminJwtVerify, fetchProductOfferDetails ); 
+router.delete('/deleteproductoffer/:id', adminJwtVerify,deleteProductOffer ); 
+router.get('/top10products',adminJwtVerify, topProducts ); 
+router.get('/top10categories',adminJwtVerify, topCategories ); 
+router.get('/top10brands',adminJwtVerify, topBrands ); 
 
 
 

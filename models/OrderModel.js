@@ -36,6 +36,15 @@ const orderSchema = new mongoose.Schema({
             default: false
 
         },
+
+        returning : {
+
+            
+            type: Boolean,
+            default: false
+
+        }
+        ,
         refunded:
         {
             type: Boolean,

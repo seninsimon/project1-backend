@@ -34,7 +34,6 @@ const getBlockUser = async (req,res)=>
     try {
 
         const user = await User.findById(id)
-        console.log("oooooooserrr : ",user);
         res.status(200).json({message : user})
         
         
