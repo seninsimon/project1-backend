@@ -13,6 +13,9 @@ const adminlogin = async (req, res) => {
     try {
 
         const admin = await Admin.findOne({username})
+
+        console.log(admin);
+        
         
         if(admin.password !== password) return res.status(401).json({success : false , message : "invalid admin credentials"})
         

@@ -6,7 +6,7 @@ const adminlogin = require('../adminControllers/adminLogin')
 const googleAuth = require('../controllers/googleAuth')
 const userManagement = require('../adminControllers/usermanagement')
 const adminJwtVerify = require('../jwt/adminJwtVerify')
-const { addCategory, fetchCategory, softDeleteCategory, categoryEdit, categoryOffer, fetchCategoryOffer, cateName, categoryofferDetails, categoryofferDelete,} = require('../adminControllers/categoryManagement')
+const { addCategory, fetchCategory, softDeleteCategory, categoryEdit, categoryOffer, fetchCategoryOffer, cateName, categoryofferDetails, categoryofferDelete,} = require('../adminControllers/CategoryManagement')
 const { fetchProduct, addProduct, editProduct, fetchEditProduct, disableProduct } = require('../adminControllers/productManagement')
 const { homePage } = require('../controllers/homePage')
 const { productDetails } = require('../controllers/productDetails')
@@ -15,7 +15,7 @@ const { addToCart, cartDetails, quantityEdit, productRemove } = require('../cont
 const userJwtVerify = require('../jwt/userJwtVerify')
 const { checkout } = require('../controllers/checkout')
 const { address, fetchAddresses, editAddress, addnewaddress, deleteAddress } = require('../controllers/addressController')
-const { orderConfirm, retryOrderConfirm } = require('../controllers/OrderConfirm')
+const { orderConfirm, retryOrderConfirm } = require('../controllers/orderConfirm') 
 const { categoryDetails } = require('../controllers/CategoryDetails')
 const { userprofile, editprofile } = require('../controllers/userProfile')
 const { fetchOrders, cancelOrder , returnProductId } = require('../controllers/Orders')
@@ -26,7 +26,7 @@ const { wishlistProducts, fetchWishlist, deletewishlist } = require('../controll
 const { fetchReturns, refundTransaction } = require('../adminControllers/returnOrders')
 const { fetchWallet, fetchTransaction } = require('../controllers/walletController')
 const { createCoupon, applyCoupon, coupondetails, deleteCoupons } = require('../adminControllers/couponManagement')
-const { salesReport, overalldetail, totalSales, totalDiscounts, orderAmount } = require('../adminControllers/salesReport')
+const { getSalesReport, getOverallStats, checkOrders, downloadSalesReportPDF, downloadSalesReportExcel } = require('../adminControllers/salesReport')
 const { CouponFetch } = require('../controllers/couponController')
 const { productOffer, fetchProductOffer, fetchProductOfferDetails, deleteProductOffer } = require('../adminControllers/productOffer')
 const { topProducts, topCategories, topBrands } = require('../adminControllers/topanalyticspage')
@@ -112,14 +112,7 @@ router.post('/createcoupon', adminJwtVerify, createCoupon)
 router.post('/couponapply',   applyCoupon)
 router.get('/coupondetails', adminJwtVerify,  coupondetails)
 router.delete('/deletecoupon/:id', adminJwtVerify,  deleteCoupons)
-router.get('/totalsales',adminJwtVerify, totalSales);
-router.get('/totaldiscounts',adminJwtVerify, totalDiscounts);
-router.get('/orderamount',adminJwtVerify, orderAmount);
 
-// POST route (for custom date ranges)
-router.post('/totalsales',adminJwtVerify, totalSales); // For custom date range
-router.post('/totaldiscounts',adminJwtVerify, totalDiscounts); // For custom date range
-router.post('/orderamount',adminJwtVerify, orderAmount); // For custom date range  
 
 router.post('/productoffer/:id',adminJwtVerify, productOffer); 
 router.get('/productoffer/:id',adminJwtVerify, fetchProductOffer ); 
@@ -128,6 +121,13 @@ router.delete('/deleteproductoffer/:id', adminJwtVerify,deleteProductOffer );
 router.get('/top10products',adminJwtVerify, topProducts ); 
 router.get('/top10categories',adminJwtVerify, topCategories ); 
 router.get('/top10brands',adminJwtVerify, topBrands ); 
+
+// Sales Report Routes
+router.get('/admin/check-orders', adminJwtVerify, checkOrders)
+router.get('/admin/sales-report', adminJwtVerify, getSalesReport)
+router.get('/admin/overall-stats', adminJwtVerify, getOverallStats)
+router.get('/admin/download-sales-report-pdf', adminJwtVerify, downloadSalesReportPDF)
+router.get('/admin/download-sales-report-excel', adminJwtVerify, downloadSalesReportExcel)
 
 
 
