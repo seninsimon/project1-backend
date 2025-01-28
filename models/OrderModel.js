@@ -64,6 +64,10 @@ const orderSchema = new mongoose.Schema({
             type: String,
             required: true,
         }
+        ,
+        returnReason : {
+            type : String
+        }
     }],
     totalPrice: {
         type: Number,
@@ -78,6 +82,11 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ['Pending', 'Confirmed', 'Dispatched', 'Delivered', 'Cancelled','payment_pending'],
         default: 'Pending'
+    },
+
+    cancelReason : {
+        type : String,
+
     },
     orderDate: {
         type: Date,

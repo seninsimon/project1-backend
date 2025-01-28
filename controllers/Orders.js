@@ -10,10 +10,10 @@ const Transaction = require("../models/transactionSchema")
 
 
 const fetchOrders = async (req, res) => {
-    
+
 
     const { token } = req.body;
-   
+
     try {
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -30,7 +30,7 @@ const fetchOrders = async (req, res) => {
         )
             .sort({ createdAt: -1 });
 
-       
+
 
         res.status(200).json({
             success: true,
@@ -47,9 +47,9 @@ const fetchOrders = async (req, res) => {
 
 
 const cancelOrder = async (req, res) => {
-    const { orderId, quantity, totalprice, paymentmethod } = req.body;
+    const { orderId, quantity, totalprice, paymentmethod, cancelReason } = req.body;
 
-    
+
 
     const token = req.headers?.authorization.split(" ")[1];
 
@@ -57,7 +57,7 @@ const cancelOrder = async (req, res) => {
         const decoded = jwt.decode(token, process.env.SECRET_KEY);
 
         // Update the order status to 'Cancelled'
-        const order = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' }, { new: true });
+        const order = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled', cancelReason }, { new: true });
 
         if (!order) {
             return res.status(404).json({ success: false, message: "Order not found" });
@@ -73,7 +73,7 @@ const cancelOrder = async (req, res) => {
         }
 
         // Only process wallet transactions for online payments
-        if (paymentmethod === "online_payment") {
+        if (paymentmethod === "online_payment" || paymentmethod === "wallet") {
             // Check if the user has an existing wallet
             let wallet = await Wallet.findOne({ userId: decoded.id });
             if (!wallet) {
@@ -116,9 +116,9 @@ const cancelOrder = async (req, res) => {
 
 
 
-
+//returning the product dont look the const name
 const returnProductId = async (req, res) => {
-    const { productid, orderid } = req.body;
+    const { productid, orderid, reason } = req.body;
 
 
 
@@ -126,7 +126,12 @@ const returnProductId = async (req, res) => {
 
         const returnproduct = await Order.findOneAndUpdate(
             { _id: orderid, "products.productId": productid },
-            { $set: { "products.$.isProductReturned": true } },
+            {
+                $set: {
+                    "products.$.isProductReturned": true,
+                    "products.$.returnReason": reason
+                }
+            },
             { new: true }
         );
 
