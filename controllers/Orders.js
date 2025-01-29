@@ -49,32 +49,19 @@ const fetchOrders = async (req, res) => {
 const cancelOrder = async (req, res) => {
     const { orderId, quantity, totalprice, paymentmethod, cancelReason } = req.body;
 
-
-
     const token = req.headers?.authorization.split(" ")[1];
 
     try {
         const decoded = jwt.decode(token, process.env.SECRET_KEY);
 
-        // Update the order status to 'Cancelled'
-        const order = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled', cancelReason }, { new: true });
-
-        if (!order) {
+        // Fetch the order details
+        const orderc = await Order.findById(orderId);
+        if (!orderc) {
             return res.status(404).json({ success: false, message: "Order not found" });
         }
 
-        // Increment the product quantities in the inventory
-        for (const item of order.products) {
-            await Product.findByIdAndUpdate(
-                item.productId, // Match the product by its ID
-                { $inc: { quantity: item.quantity } }, // Increment quantity
-                { new: true } // Return the updated document
-            );
-        }
-
-        // Only process wallet transactions for online payments
-        if (paymentmethod === "online_payment" || paymentmethod === "wallet") {
-            // Check if the user has an existing wallet
+        // Refund logic (only if the payment method is eligible and status is NOT "payment_pending")
+        if ((paymentmethod === "online_payment" || paymentmethod === "wallet") && orderc.status !== "payment_pending") {
             let wallet = await Wallet.findOne({ userId: decoded.id });
             if (!wallet) {
                 wallet = await Wallet.create({ userId: decoded.id, balance: 0 });
@@ -91,19 +78,25 @@ const cancelOrder = async (req, res) => {
                 amount: totalprice,
                 description: `Refunded`,
             });
-
-            return res.status(200).json({
-                success: true,
-                message: "Order cancelled and refund processed to wallet successfully",
-                order,
-                wallet,
-            });
         }
 
-        // For cash on delivery, no wallet transaction
+        // Update order status to 'Cancelled' with the cancel reason
+        const order = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled', cancelReason }, { new: true });
+
+        // Increment the product quantities in the inventory
+        for (const item of order.products) {
+            await Product.findByIdAndUpdate(
+                item.productId, // Match the product by its ID
+                { $inc: { quantity: item.quantity } }, // Increment quantity
+                { new: true } // Return the updated document
+            );
+        }
+
         res.status(200).json({
             success: true,
-            message: "Order cancelled successfully (No wallet transaction for cash on delivery)",
+            message: orderc.status === "payment_pending" 
+                ? "Order cancelled successfully (No refund as payment is pending)"
+                : "Order cancelled successfully and refund processed (if applicable)",
             order,
         });
     } catch (error) {
@@ -111,7 +104,6 @@ const cancelOrder = async (req, res) => {
         res.status(500).json({ success: false, message: "Internal server error", error: error.message });
     }
 };
-
 
 
 
