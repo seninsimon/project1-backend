@@ -71,6 +71,8 @@ router.post('/transactionhistory', fetchTransaction)
 router.post('/offerforcategory/:id', fetchCategoryOffer)
 router.post('/returnproductid', returnProductId)
 router.get('/fetchcoupons', CouponFetch)
+router.post('/productoffer/:id', productOffer); 
+router.get('/productoffer/:id', fetchProductOffer ); 
 
 
 
@@ -114,8 +116,7 @@ router.get('/coupondetails', adminJwtVerify,  coupondetails)
 router.delete('/deletecoupon/:id', adminJwtVerify,  deleteCoupons)
 
 
-router.post('/productoffer/:id',adminJwtVerify, productOffer); 
-router.get('/productoffer/:id',adminJwtVerify, fetchProductOffer ); 
+
 router.get('/fetchproductofferdetails',adminJwtVerify, fetchProductOfferDetails ); 
 router.delete('/deleteproductoffer/:id', adminJwtVerify,deleteProductOffer ); 
 router.get('/top10products',adminJwtVerify, topProducts ); 

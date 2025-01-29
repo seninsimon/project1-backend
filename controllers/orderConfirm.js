@@ -95,18 +95,6 @@ const orderConfirm = async (req, res) => {
                 });
     
     
-    
-    
-    
-    
-    
-    
-    
-                
-
-
-                
-
                 return res.status(200).json({ success: true, message: "Order confirmed" });
             } catch (error) {
                 console.error("Error updating wallet balance:", error);
